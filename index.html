@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <title>Stopwatch</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+
+        main{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            font-family: lato;
+        }
+
+        #stopwatch{
+            height: 500px;
+            width: 800px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #top{
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+
+        #middle{
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 2rem;
+            gap: 10px;
+        }
+
+        #bottom{
+            height: 100px;
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .but{
+            border-radius: 50%;
+            height: 75px;
+            width: 75px;
+            border: 0px;
+            font-size: 1.25rem;
+            font-family: lato;
+        }
+
+        #start{
+            background-color: #bfbfbf;
+        }
+
+        #split{
+            background-color: #bfbfbf;
+        }
+
+        #restart{
+            background-color: #bfbfbf;
+        }
+
+        .number{
+            font-size: 5rem;
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .spl{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    
+</head>
+<body>
+    <main>
+        <section id="stopwatch">
+            <section id="top">
+                <p id="time0" class="number">0</p>
+                <p id="time1" class="number">0 :</p>
+                <p id="time2" class="number">0</p>
+                <p id="time3" class="number">0 :</p>
+                <p id="time4" class="number">0</p>
+                <p id="time5" class="number">0</p>
+                <p id="time6" class="number">0</p>
+            </section>
+            <section id="middle">
+                <p id="split0" class="spl"></p>
+                <p id="split1" class="spl"></p>
+                <p id="split2" class="spl"></p>
+                <p id="split3" class="spl"></p>
+            </section>
+            <section id="bottom">
+                <button id="start" class="but" type="button">
+                    start
+                </button>
+                <button id="split" class="but" type="button">
+                    split
+                </button>
+                <button id="restart" class="but" type="button">
+                    reset
+                </button>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        let isstopped = 0;
+        let splitnumber = 0;
+        let time = [0,0,0,0,0,0,0];
+        document.getElementById('start').addEventListener('click', run);
+        document.getElementById('split').addEventListener('click', split);
+        document.getElementById('restart').addEventListener('click', restart);
+        function stopwatch(){
+            if(isstopped%2 == 1){
+            time[5] += 1;
+
+            if(time[5]==10){
+                time[4] += 1;
+                time[5] = 0;
+            }
+
+            if(time[4]==10){
+                time[3] += 1;
+                time[4] = 0;
+            }
+
+            if(time[3]==10){
+                time[2] += 1;
+                time[3] = 0;
+            }
+
+            if(time[2]==6){
+                time[1] += 1;
+                time[2] = 0;
+            }
+
+            if(time[1]==10){
+                time[0] += 1;
+                time[1] = 0;
+            }
+
+            document.getElementById('time0').innerHTML = time[0];
+            document.getElementById('time1').innerHTML = time[1] + ' :';
+            document.getElementById('time2').innerHTML = time[2];
+            document.getElementById('time3').innerHTML = time[3] + ' :';
+            document.getElementById('time4').innerHTML = time[4];
+            document.getElementById('time5').innerHTML = time[5];
+        }
+        }
+
+        function stopwatchmil(){
+            if(isstopped%2 == 1){
+            time[6] += 1;
+
+            if(time[6] == 9){
+                time[6] = 0;
+            }
+
+            document.getElementById('time6').innerHTML = time[6];
+        }
+        }
+
+        function run(){
+            if(isstopped%2 == 0){
+                setInterval(stopwatchmil, 1);
+                setInterval(stopwatch, 10);
+                isstopped++;
+                document.getElementById('start').textContent = 'stop';
+            }else{
+                isstopped++;
+                document.getElementById('start').textContent = 'start';
+            }
+        }
+
+        function split(){
+            if(isstopped%2 == 1){
+                document.getElementById('split' + splitnumber).innerHTML = '' + time[0] + '' + time[1] + ' : ' + time[2] + '' + time[3] + ' : ' + time[4] + '' + time[5] + '' + time[6] + '<br>';
+            splitnumber ++;
+            if(splitnumber == 4){
+                splitnumber = 0;
+            }
+            }
+        }
+
+        function restart(){
+            isstopped = 0;
+            splitnumber = 0;
+            time = [0,0,0,0,0,0,0];
+            document.getElementById('time0').innerHTML = time[0];
+            document.getElementById('time1').innerHTML = time[1] + ' :';
+            document.getElementById('time2').innerHTML = time[2];
+            document.getElementById('time3').innerHTML = time[3] + ' :';
+            document.getElementById('time4').innerHTML = time[4];
+            document.getElementById('time5').innerHTML = time[5];
+            document.getElementById('time6').innerHTML = time[6];
+            document.getElementById('split0').innerHTML = '';
+            document.getElementById('split1').innerHTML = '';
+            document.getElementById('split2').innerHTML = '';
+            document.getElementById('split3').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
